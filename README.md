@@ -9,12 +9,12 @@ Web-accessible (REST) service for Identification and resolution of plant taxonom
 ```
   julia install_julia_pkgs
 ```
-* Run ```julia chemgrab_api.jl```
+* Run `julia chemgrab_api.jl`
 
 
 ### Sample queries to BCBI's server 
 
-* ```http://bcbi.brown.edu/solrplant_api/?plantname=Arabidopsis%20thaliana
+* `http://bcbi.brown.edu/solrplant_api/?plantname=Arabidopsis%20thaliana`
 
 ### WebAccess
 
