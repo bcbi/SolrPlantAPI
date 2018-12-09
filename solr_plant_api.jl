@@ -79,7 +79,7 @@ function generate_sub_query(string::String, not_arr)
                 not_query = join(name_arr, "%20OR%20")
             end
         end
-        query = "\($yes_query\)%20NOT\%20\($not_query\)"
+        query = "($yes_query)%20NOT%20($not_query)"
         #println(query)
     else
         query = yes_query
@@ -132,7 +132,7 @@ function norm_string(url::String,herb_str::String)
                     if mapping == "match"
                         if scr > max_scr
                             max_scr = scr
-                            filter!(x -> x!="\-", algn_b)
+                            filter!(x -> x!="-", algn_b)
                             res_dict[scr] = "$(ucfirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
                             #println("$herb_name\$$name\$$name_pd\$$solr_scr\$$scr\$$name_len\$$coverage\$$mapping")
                         end
@@ -152,7 +152,7 @@ function norm_string(url::String,herb_str::String)
                         if mapping == "match"
                             if scr > max_scr
                                 max_scr = scr
-                                filter!(x -> x!="\-", algn_b)
+                                filter!(x -> x!="-", algn_b)
                                 res_dict[scr] = "$(ucfirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
                                 #println("$herb_name\$$name\$$name_pd\$$solr_scr\$$scr\$$name_len\$$coverage\$$mapping")
                             end
@@ -171,7 +171,7 @@ function norm_string(url::String,herb_str::String)
                     if mapping == "match"
                         if scr > max_scr
                             max_scr = scr
-                            filter!(x -> x!="\-", algn_b)
+                            filter!(x -> x!="-", algn_b)
                             res_dict[scr] = "$(ucfirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
                             #println("$herb_name\$$name\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$mapping")
                         end
@@ -251,15 +251,15 @@ function resolve_name(herb::String)
             ubt_id != "NA" ? accept_name = accepted_name(ubt_id) : accept_name = "NA"
             match_typ == "Sciname" ? match_typ = "Scientific Name" : match_typ = match_typ
             push!(name_arr, split(res_str, "\$")[3])
-            push!(ret_arr, "\{\"NameSubmitted\"\:\"$name_subm\"\,\"NameMatched\"\:\"$name_match\"\,\"TaxonomicStatus\"\:\"$match_typ\"\,\"uBiotaID\"\:\"$ubt_id\"\,\"AcceptedName\"\:\"$accept_name\"\}")
+            push!(ret_arr, """{"NameSubmitted":"$name_subm","NameMatched":"$name_match","TaxonomicStatus":"$match_typ","uBiotaID":"$ubt_id","AcceptedName":"$accept_name"}""")
             split(res_str, "\$")[2] == "NA" ? break : nothing
         else
-            push!(ret_arr, "\{\"NameSubmitted\"\:\"No Matches\"\,\"NameMatched\"\:\"NA\"\,\"TaxonomicStatus\"\:\"NA\"\,\"uBiotaID\"\:\"NA\"\,\"AcceptedName\"\:\"NA\"\}")
+            push!(ret_arr, """{"NameSubmitted":"No Matches","NameMatched":"NA","TaxonomicStatus":"NA","uBiotaID":"NA","AcceptedName":"NA"}""")
         end
     end
     ret_arr = unique(ret_arr)
     length(ret_arr) != 1 ? ret_arr = ret_arr[1:end-1] : nothing
-    return "\[$(join(ret_arr, "\,"))\]"
+    return "[$(join(ret_arr, ","))]"
 end
 
 # Take input as text for resolving names
@@ -284,7 +284,7 @@ function extract_plants(text, extractor)
                         ubt_id     = json_str[i]["uBiotaID"]
                         accept_name = json_str[i]["AcceptedName"]
                         #println("$(json_str[i]["NameSubmitted"])\$$(json_str[i]["NameMatched"])\$$(json_str[i]["AcceptedName"])")
-                        push!(ret_arr, "\{\"NameSubmitted\"\:\"$name_subm\"\,\"NameMatched\"\:\"$name_match\"\,\"TaxonomicStatus\"\:\"$match_typ\"\,\"uBiotaID\"\:$ubt_id\,\"AcceptedName\"\:\"$accept_name\"\}")
+                        push!(ret_arr, """{"NameSubmitted":"$name_subm","NameMatched":"$name_match","TaxonomicStatus":"$match_typ","uBiotaID":$ubt_id,"AcceptedName":"$accept_name"}""")
                     end
                 end
             catch err
@@ -293,7 +293,7 @@ function extract_plants(text, extractor)
             end
         end
     end
-    return "\[$(join(ret_arr, "\,"))\]"
+    return "[$(join(ret_arr, ","))]"
 end
 
 
