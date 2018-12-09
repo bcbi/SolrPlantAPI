@@ -318,7 +318,7 @@ function run_server()
             "Date"              => Dates.format(now(Dates.UTC), Dates.RFC1123Format),
             "Access-Control-Allow-Origin" => "*" )
 
-        return HTTP.Response(200, HTTP.Headers(collect(headers)), body = String(resolve_name(query_dict["plantname"])))
+        return HTTP.Response(200, HTTP.Headers(collect(headers)), body = String(extract_plants(query_dict["text"])))
     end
 
 
