@@ -22,6 +22,7 @@ include("sw_align_srs.jl")
 # Escaping special characters
 # replace(str2, r"[+|-|\^|\"|\~|\*|\?|\:|\|/|\!|\&|\|\(|\)]", " OR ")
 
+const solr_host="http://localhost:8983/solr"
 #Sentence tokenization
 function sentTokenization(txt, ntk)
     sent_arr = ntk.sent_tokenize(txt)
@@ -52,7 +53,7 @@ function generate_query(string::String)
         push!(str_arr, "term:$str~")
         query = join(str_arr, "%20OR%20")
     end
-    url_string = "http://localhost:8983/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
+    url_string = solar_host * "/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
     #url_string = "http://bcbi.brown.edu/solr/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
     return url_string
 end
@@ -85,7 +86,7 @@ function generate_sub_query(string::String, not_arr)
         query = yes_query
     end
 
-    url_string = "http://localhost:8983/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc&rows=10"
+    url_string = solar_host * "/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc&rows=10"
     #url_string = "http://bcbi.brown.edu/solr/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
     return url_string
 end
@@ -222,7 +223,7 @@ end
 
 # Retrieve accepted name
 function accepted_name(ubt_id::String)
-    url_string = "http://localhost:8983/solr/ubt_plant/select?q=ubt_id:$ubt_id%20AND%20type:sciname"
+    url_string = solar_host * "/ubt_plant/select?q=ubt_id:$ubt_id%20AND%20type:sciname"
     #url_string = "http://bcbi.brown.edu/solr/solr/ubt_plant/select?q=ubt_id:$ubt_id%20AND%20type:sciname"
     ret_str  = HTTP.request("GET","$url_string";)
     json_str = JSON.parse(String(ret_str.body))
@@ -297,6 +298,34 @@ function extract_plants(text, extractor)
 end
 
 
+function run_server()
+
+    query_dict = Dict()
+
+    HTTP.listen() do request::HTTP.Request
+       
+        println("******************")
+        @show request
+        println("******************")
+
+        uri = parse(HTTP.URI, request.target)
+        query_dict = HTTP.queryparams(uri)
+
+        headers = Dict{AbstractString,AbstractString}(
+            "Server"            => "Julia/$VERSION",
+            "Content-Type"      => "text/html; charset=utf-8",
+            "Content-Language"  => "en",
+            "Date"              => Dates.format(now(Dates.UTC), Dates.RFC1123Format),
+            "Access-Control-Allow-Origin" => "*" )
+
+        return HTTP.Response(200, HTTP.Headers(collect(headers)), body = String(resolve_name(query_dict["plantname"])))
+    end
+
+
+end
+
+run_server()
+
 #############
 ### TESTS ###
 #############
@@ -329,7 +358,7 @@ end
 #println("Time taken: $(round(endTime-startTime, 2)) sec.")
 #println("########################")
 
-extractor = npx.ConllExtractor()
-text = herb
-pt_spec = extract_plants(text, extractor)
-println(pt_spec)
+# extractor = npx.ConllExtractor()
+# text = herb
+# pt_spec = extract_plants(text, extractor)
+# println(pt_spec)
