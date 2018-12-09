@@ -49,8 +49,8 @@ function generate_query(string::String)
     str_arr = Any[]
     query   = ""
     for str in split(string1, " ")
-        push!(str_arr, "term:$str\~")
-        query = join(str_arr, "\%20OR\%20")
+        push!(str_arr, "term:$str~")
+        query = join(str_arr, "%20OR%20")
     end
     url_string = "http://localhost:8983/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
     #url_string = "http://bcbi.brown.edu/solr/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
@@ -67,8 +67,8 @@ function generate_sub_query(string::String, not_arr)
     yes_query   = ""
     not_query = ""
     for str in split(string1, " ")
-        push!(str_arr, "term:$str\~")
-        yes_query = join(str_arr, "\%20OR\%20")
+        push!(str_arr, "term:$str~")
+        yes_query = join(str_arr, "%20OR%20")
     end
     if length(not_arr) > 0
         name_arr = String[]
@@ -76,7 +76,7 @@ function generate_sub_query(string::String, not_arr)
             #println("$name \=\>")
             for str in split(name, " ")
                 push!(name_arr, "term:$str")
-                not_query = join(name_arr, "\%20OR\%20")
+                not_query = join(name_arr, "%20OR%20")
             end
         end
         query = "\($yes_query\)%20NOT\%20\($not_query\)"
