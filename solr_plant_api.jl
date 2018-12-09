@@ -42,9 +42,9 @@ end
 
 # Generate query URL from herb name string
 function generate_query(string::String)
-    string1 = replace(string, r"[\+|\-|\^|\"|\~|\*|\?|\:|\|/|\!|\&|\|\(|\)|\{|\}|\[|\]]", " ")
-    string1 = replace(string1, r"[0-9]", "")
-    string1 = replace(string1, r"\s{2,}", " ")
+    string1 = replace(string, r"[\+|\-|\^|\"|\~|\*|\?|\:|\|/|\!|\&|\|\(|\)|\{|\}|\[|\]]" => " ")
+    string1 = replace(string1, r"[0-9]" => "")
+    string1 = replace(string1, r"\s{2,}" => " ")
     string1 = strip(string1)
     str_arr = Any[]
     query   = ""
@@ -59,9 +59,9 @@ end
 
 # Generate recursive query URL from herb name string
 function generate_sub_query(string::String, not_arr)
-    string1 = replace(string, r"[\+|\-|\^|\"|\~|\*|\?|\:|\|/|\!|\&|\|\(|\)|\{|\}|\[|\]\,]", " ")
-    string1 = replace(string1, r"[0-9]", "")
-    string1 = replace(string1, r"\s{2,}", " ")
+    string1 = replace(string, r"[\+|\-|\^|\"|\~|\*|\?|\:|\|/|\!|\&|\|\(|\)|\{|\}|\[|\]\,]" => " ")
+    string1 = replace(string1, r"[0-9]" => "")
+    string1 = replace(string1, r"\s{2,}" => " ")
     string1 = strip(string1)
     str_arr = Any[]
     yes_query   = ""
@@ -100,9 +100,9 @@ function norm_string(url::String,herb_str::String)
     numFound = json_str["response"]["numFound"]
     #println(json_str)
     if numFound > 0
-        herb_str = replace(herb_str, r"\s+cf\.?\s+"i, " ")
-        herb_str = replace(herb_str, r"\s+aff\.?\s+"i, " ")
-        herb_str = replace(herb_str, r"\s{2,}", " ")
+        herb_str = replace(herb_str, r"\s+cf\.?\s+"i => " ")
+        herb_str = replace(herb_str, r"\s+aff\.?\s+"i => " ")
+        herb_str = replace(herb_str, r"\s{2,}" => " ")
         herb_str = strip(herb_str)
         res_dict = Dict{Float64,String}()
         max_scr = 0
@@ -238,8 +238,8 @@ function resolve_name(herb::String)
     n = trunc(Int, length(split(herb, " "))/2)
     n == 0 ? n = 1 : nothing
     for i in 1:n
-        herb = replace(lowercase(herb), r"(\s[A-Za-z0-9]{2}\s|\s[A-Za-z0-9]{2}$|^[A-Za-z0-9]{2}\s)", " ")
-        herb = replace(herb, r"\s+", " ")
+        herb = replace(lowercase(herb), r"(\s[A-Za-z0-9]{2}\s|\s[A-Za-z0-9]{2}$|^[A-Za-z0-9]{2}\s)" => " ")
+        herb = replace(herb, r"\s+" => " ")
         url  = generate_sub_query(herb, name_arr)
         res_str, num_found = norm_string(url,herb)
         num_found == 0 ? break : nothing
@@ -265,9 +265,9 @@ end
 # Take input as text for resolving names
 function extract_plants(text, extractor)
     ret_arr = Any[]
-    txt = replace(text, r"\n+", " ")
-    txt = replace(txt, r"\*\s", "")
-    txt = replace(txt, r"\%", "")
+    txt = replace(text, r"\n+" => " ")
+    txt = replace(txt, r"\*\s" => "")
+    txt = replace(txt, r"\%" => "")
     txt = strip(txt)
     sent_arr = sentTokenization(txt, ntk)
     for sent in sent_arr
@@ -329,7 +329,7 @@ end
 #println("Time taken: $(round(endTime-startTime, 2)) sec.")
 #println("########################")
 
-# extractor = npx.ConllExtractor()
-# text = herb
-# pt_spec = extract_plants(text, extractor)
-# println(pt_spec)
+extractor = npx.ConllExtractor()
+text = herb
+pt_spec = extract_plants(text, extractor)
+println(pt_spec)
