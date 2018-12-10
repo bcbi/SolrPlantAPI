@@ -35,12 +35,14 @@ COPY . /usr/bin/solrplant_api
 EXPOSE 8081
 
 ENV CONDA_JL_HOME=/opt/conda
-ENV PYTHON=`which python`
 
-RUN echo "Installing Julia Packages"
+RUN `which python`
+# ENV PYTHON=`which python`
 
-RUN julia -e 'using Pkg; Pkg.activate(pwd()); Pkg.instantiate();'
+# RUN echo "Installing Julia Packages"
 
-CMD julia --project server.jl
+# RUN julia -e 'using Pkg; Pkg.activate(pwd()); Pkg.instantiate();'
 
-# 172.17.0.2
+# CMD julia --project server.jl
+
+# # 172.17.0.2
