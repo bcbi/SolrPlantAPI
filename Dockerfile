@@ -1,5 +1,10 @@
 FROM julia:1.0.2
 
+# Basic OS dependencies
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get -yq dist-upgrade \
+    && apt-get install -yq --no-install-recommends \
+    wget
 
 # ****************************** Conda and Python***************************
 # Configure environment
