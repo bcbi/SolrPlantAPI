@@ -43,12 +43,12 @@ EXPOSE 8081
 ENV CONDA_JL_HOME=/opt/conda
 
 RUN echo `which python`
-# ENV PYTHON=`which python`
+ENV PYTHON=/opt/conda/bin/python
 
-# RUN echo "Installing Julia Packages"
+RUN echo "Installing Julia Packages"
 
-# RUN julia -e 'using Pkg; Pkg.activate(pwd()); Pkg.instantiate();'
+RUN julia -e 'using Pkg; Pkg.activate(pwd()); Pkg.instantiate();'
 
-# CMD julia --project server.jl
+CMD julia --project server.jl
 
 # # 172.17.0.2
