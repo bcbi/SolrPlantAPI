@@ -4,7 +4,8 @@ FROM julia:1.0.2
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get -yq dist-upgrade \
     && apt-get install -yq --no-install-recommends \
-    wget
+    wget \
+    bzip2
 
 # ****************************** Conda and Python***************************
 # Configure environment
@@ -41,7 +42,7 @@ EXPOSE 8081
 
 ENV CONDA_JL_HOME=/opt/conda
 
-RUN `which python`
+RUN echo ${`which python`}
 # ENV PYTHON=`which python`
 
 # RUN echo "Installing Julia Packages"
