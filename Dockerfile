@@ -42,7 +42,7 @@ EXPOSE 8081
 
 ENV CONDA_JL_HOME=/opt/conda
 
-RUN echo ${`which python`}
+RUN echo `which python`
 # ENV PYTHON=`which python`
 
 # RUN echo "Installing Julia Packages"
