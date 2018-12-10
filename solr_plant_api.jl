@@ -6,6 +6,7 @@
 # Brown University
 # Pre-processing involves text tokenization and noun phrase parsing.
 
+    
 using DataFrames
 using HTTP
 using JSON
@@ -298,33 +299,36 @@ function extract_plants(text, extractor)
 end
 
 
-function run_server()
 
-    query_dict = Dict()
 
-    HTTP.listen() do request::HTTP.Request
+
+# function run_server()
+
+#     query_dict = Dict()
+
+#     HTTP.listen() do request::HTTP.Request
        
-        println("******************")
-        @show request
-        println("******************")
+#         println("******************")
+#         @show request
+#         println("******************")
 
-        uri = parse(HTTP.URI, request.target)
-        query_dict = HTTP.queryparams(uri)
+#         uri = parse(HTTP.URI, request.target)
+#         query_dict = HTTP.queryparams(uri)
 
-        headers = Dict{AbstractString,AbstractString}(
-            "Server"            => "Julia/$VERSION",
-            "Content-Type"      => "text/html; charset=utf-8",
-            "Content-Language"  => "en",
-            "Date"              => Dates.format(now(Dates.UTC), Dates.RFC1123Format),
-            "Access-Control-Allow-Origin" => "*" )
+#         headers = Dict{AbstractString,AbstractString}(
+#             "Server"            => "Julia/$VERSION",
+#             "Content-Type"      => "text/html; charset=utf-8",
+#             "Content-Language"  => "en",
+#             "Date"              => Dates.format(now(Dates.UTC), Dates.RFC1123Format),
+#             "Access-Control-Allow-Origin" => "*" )
 
-        return HTTP.Response(200, HTTP.Headers(collect(headers)), body = String(extract_plants(query_dict["text"])))
-    end
+#         return HTTP.Response(200, HTTP.Headers(collect(headers)), body = String(extract_plants(query_dict["text"])))
+#     end
 
 
-end
+# end
 
-run_server()
+# run_server()
 
 #############
 ### TESTS ###
