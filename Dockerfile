@@ -7,7 +7,7 @@ WORKDIR /usr/bin/solrplant_api
 # Bundle app source
 COPY . /usr/bin/solrplant_api
 
-EXPOSE 8093
+EXPOSE 8081
 
 RUN echo "Installing Julia Packages"
 
