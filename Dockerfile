@@ -30,7 +30,7 @@ RUN conda install -c conda-forge --quiet --yes \
     nltk \
     textblob
 
-RUN python -c 'import nltk; nltk.download(\'punkt\'); nltk.download(\'conll2000\');'
+RUN python -c 'import nltk; nltk.download(\"punkt\"); nltk.download(\"conll2000\");'
 
 # Create app directory
 RUN mkdir -p /usr/bin/solrplant_api
