@@ -1,3 +1,14 @@
+using Distributed
+
+while nprocs() < Sys.CPU_THREADS
+    addprocs(1; exeflags="--project")
+    @info "adding worker"
+end
+
+
+@info "creating worker pool"
+global wp = WorkerPool(workers())
+
 @everywhere begin
     include("solr_plant_api.jl")
 end
@@ -47,5 +58,5 @@ end
 s = build_server()
 
 @info "running server"
-port = 8093
+port = 8081
 HTTP.Servers.serve(s, "0.0.0.0", port)
