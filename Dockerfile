@@ -33,10 +33,10 @@ RUN conda install -c conda-forge --quiet --yes \
 RUN python -c 'import nltk; nltk.download("punkt"); nltk.download("conll2000");'
 
 # Create app directory
-RUN mkdir -p /usr/bin/solrplant_api
+RUN mkdir -p /usr/bin/solrplant_api/src
 WORKDIR /usr/bin/solrplant_api
 # Bundle app source
-COPY . /usr/bin/solrplant_api
+COPY src /usr/bin/solrplant_api/src
 
 EXPOSE 8081
 
@@ -48,6 +48,8 @@ ENV PYTHON=/opt/conda/bin/python
 RUN echo "Installing Julia Packages"
 
 RUN julia -e 'using Pkg; Pkg.activate(pwd()); Pkg.instantiate();'
+
+COPY server.jl /usr/bin/solrplant_api/
 
 CMD julia --project server.jl
 

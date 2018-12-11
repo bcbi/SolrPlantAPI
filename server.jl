@@ -12,7 +12,7 @@ end
 global wp = WorkerPool(workers())
 
 @everywhere begin
-    include("solrplant_api.jl")
+    include("./src/solrplant_api.jl")
 end
 # SERVER FUNCTION
 function process_text(;text="")
