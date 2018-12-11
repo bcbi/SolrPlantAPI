@@ -1,4 +1,6 @@
 using Distributed
+@everywhere using HTTP, Sockets, Dates
+
 
 while nprocs() < Sys.CPU_THREADS
     addprocs(1; exeflags="--project")
