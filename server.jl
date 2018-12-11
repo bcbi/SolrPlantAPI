@@ -1,12 +1,11 @@
 using Distributed
-@everywhere using HTTP, Sockets, Dates
-
 
 while nprocs() < Sys.CPU_THREADS
     addprocs(1; exeflags="--project")
     @info "adding worker"
 end
 
+@everywhere using HTTP, Sockets, Dates
 
 @info "creating worker pool"
 global wp = WorkerPool(workers())
@@ -17,7 +16,7 @@ end
 # SERVER FUNCTION
 function process_text(;text="")
     @info "GETTING STATS"
-    f = remotecall(extract_plants, wp, string(uid), string(tui))
+    f = remotecall(extract_plants, wp, string(text))
     return fetch(f)
 end
 
@@ -38,6 +37,9 @@ function build_server()
             @show headers
             uri = parse(HTTP.URI, req.target)
             query_dict = HTTP.queryparams(uri)
+            @show uri
+            @show query_dict
+            @show query_dict["text"]
 
             try
                 @info "here"
@@ -53,7 +55,7 @@ function build_server()
 
     r = HTTP.Router()
 
-    HTTP.register!(r, "GET", "/text", h_text)
+    HTTP.register!(r, "GET", "", h_text)
 
     return HTTP.Servers.Server(r, ratelimit=typemax(Int64)//1)
 
