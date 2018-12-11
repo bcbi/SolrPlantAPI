@@ -31,12 +31,16 @@ function build_server()
         "Access-Control-Allow-Origin" => "*",
         "Access-Control-Allow-Methods" => "GET" )
 
+    
     # route handlers
     h_text = HTTP.Handlers.HandlerFunction( (req) -> begin
+
+            @show headers
             uri = parse(HTTP.URI, req.target)
             query_dict = HTTP.queryparams(uri)
 
             try
+                @info "here"
                 response = HTTP.Response(200, HTTP.Headers(collect(headers)), body = process_text(text=string(query_dict["text"])))
                 return response
             catch
