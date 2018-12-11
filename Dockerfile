@@ -47,7 +47,7 @@ ENV PYTHON=/opt/conda/bin/python
 
 RUN echo "Installing Julia Packages"
 
-RUN julia -e 'using Pkg; Pkg.activate(pwd()); Pkg.instantiate();'
+RUN julia -e 'using Pkg; Pkg.activate("/usr/bin/solrplant_api/src"); Pkg.instantiate();'
 
 COPY server.jl /usr/bin/solrplant_api/
 
