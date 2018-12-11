@@ -39,11 +39,14 @@ function build_server()
             query_dict = HTTP.queryparams(uri)
             @show uri
             @show query_dict
-            @show query_dict["text"]
+            @show req
+            @show req.body
 
             try
                 @info "here"
-                response = HTTP.Response(200, HTTP.Headers(collect(headers)), body = process_text(text=string(query_dict["text"])))
+                # text = query_dict["text"]
+                text = req.body
+                response = HTTP.Response(200, HTTP.Headers(collect(headers)), body = process_text(text=string(text)))
                 return response
             catch
                 @show query_dict
