@@ -28,7 +28,7 @@ function build_server()
         "Content-Language"  => "en",
         "Date"              => Dates.format(now(Dates.UTC), Dates.RFC1123Format),
         # "Access-Control-Allow-Origin" => "https://bcbi.brown.edu",
-        "Access-Control-Allow-Origin" => "http://localhost:3000",
+        "Access-Control-Allow-Origin" => "*",
         "Access-Control-Allow-Methods" => "GET" )
 
     # route handlers
