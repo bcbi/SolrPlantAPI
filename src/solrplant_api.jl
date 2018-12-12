@@ -117,7 +117,7 @@ function norm_string(url::String,herb_str::String)
         for i=1:n
             ubt_id   = json_str["response"]["docs"][i]["ubt_id"][1]
             name     = json_str["response"]["docs"][i]["term"][1]
-            solr_scr = round(json_str["response"]["docs"][i]["score"][1],2)
+            solr_scr = round(json_str["response"]["docs"][i]["score"][1], digits = 2)
             typ      = json_str["response"]["docs"][i]["type"][1]
             seq_b = uppercase(herb_str)
             seq_a = uppercase(name)
@@ -131,7 +131,7 @@ function norm_string(url::String,herb_str::String)
                 name_len = length(name)  #length(split(herb_str, " ")[1])
                 algn_len = length(algn_a)
 
-                coverage = round((algn_len/name_len)*100, 2)
+                coverage = round((algn_len/name_len)*100, digits = 2)
                 if coverage == 100.00
                     mapping = check_match(seq_a, seq_b, algn_a, indx, mstr)
                     #scr > max_scr ? max_scr = scr : max_scr = max_scr
@@ -152,7 +152,7 @@ function norm_string(url::String,herb_str::String)
                     algn_a, algn_b, scr, indx, indy, mstr = traceback(matrix,path,seq_a,seq_b)
                     name_len = length(name_pd)
                     algn_len = length(algn_a)
-                    coverage = round((algn_len/name_len)*100, 2)
+                    coverage = round((algn_len/name_len)*100, digits = 2)
                     if coverage > 80.00
                         mapping = check_match(seq_a, seq_b, algn_a, indx, mstr)
                         if mapping == "match"
@@ -171,7 +171,7 @@ function norm_string(url::String,herb_str::String)
                 name_len = length(name)  #length(split(herb_str, " ")[1])
                 algn_len = length(algn_a)
 
-                coverage = round((algn_len/name_len)*100, 2)
+                coverage = round((algn_len/name_len)*100, digits = 2)
                 if coverage > 80.00
                     mapping = check_match(seq_a, seq_b, algn_a, indx, mstr)
                     if mapping == "match"
