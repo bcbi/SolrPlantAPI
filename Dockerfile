@@ -41,7 +41,7 @@ COPY "./Manifest.toml" /usr/bin/solrplant_api/
 COPY "./Project.toml" /usr/bin/solrplant_api/
 COPY src /usr/bin/solrplant_api/src
 
-EXPOSE 8081
+EXPOSE 8081 8983
 
 ENV CONDA_JL_HOME=/opt/conda
 

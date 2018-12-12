@@ -23,7 +23,7 @@ include("sw_align_srs.jl")
 # Escaping special characters
 # replace(str2, r"[+|-|\^|\"|\~|\*|\?|\:|\|/|\!|\&|\|\(|\)]", " OR ")
 
-const solr_host="http://localhost:8983/solr"
+const solr_host = "http://127.0.0.1:8983/solr"
 #Sentence tokenization
 function sentTokenization(txt, ntk)
     sent_arr = ntk.sent_tokenize(txt)
