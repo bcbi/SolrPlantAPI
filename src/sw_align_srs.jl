@@ -110,10 +110,10 @@ function traceback(matrix::Array{Float64,2},path::Array{String,2},seq_a::String,
             #ind_x = ind_x + 1
             #println("\$")
         end
-        m = matchall(r"\-", join(align2, ""))
+        m = collect((m.match for m = eachmatch(r"\-", join(align2, ""))))
         return align1[end:-1:1], align2[end:-1:1], maxval, ind_x-1, ind_y, seq_b[ind_x-length(align2)+i+1:ind_x]
     else
-        m = matchall(r"\-", join(align2, ""))
+        m = collect((m.match for m = eachmatch(r"\-", join(align2, ""))))
         return align1[end:-1:1], align2[end:-1:1], maxval, ind_x-1, ind_y, seq_b[ind_x-length(align2)+i+1:ind_x]
     end
 end
