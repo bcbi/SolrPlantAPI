@@ -246,6 +246,7 @@ function resolve_name(herb::String)
     for i in 1:n
         herb = replace(lowercase(herb), r"(\s[A-Za-z0-9]{2}\s|\s[A-Za-z0-9]{2}$|^[A-Za-z0-9]{2}\s)" => " ")
         herb = replace(herb, r"\s+" => " ")
+        println("Herb:" , herb)
         url  = generate_sub_query(herb, name_arr)
         println("URL: ", url)
         res_str, num_found = norm_string(url,herb)
@@ -303,7 +304,7 @@ function extract_plants(text, extractor)
                     end
                 end
             catch err
-                #println(err)
+                println(err)
                 continue
             end
         end
