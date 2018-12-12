@@ -247,7 +247,9 @@ function resolve_name(herb::String)
         herb = replace(lowercase(herb), r"(\s[A-Za-z0-9]{2}\s|\s[A-Za-z0-9]{2}$|^[A-Za-z0-9]{2}\s)" => " ")
         herb = replace(herb, r"\s+" => " ")
         url  = generate_sub_query(herb, name_arr)
+        println("URL: ", url)
         res_str, num_found = norm_string(url,herb)
+        println("Resolved name: ", res_str)
         num_found == 0 ? break : nothing
         if length(split(split(res_str, "\$")[1], " ")) >= 2
             split(res_str, "\$")[2] != "NA" ? name_subm = split(res_str, "\$")[1] : name_subm  = "No Matches"
@@ -281,12 +283,12 @@ function extract_plants(text, extractor)
 
     for sent in sent_arr
         nphrs = textblob.TextBlob(sent, np_extractor=extractor)
-        println("Noun phrases: ", nphrs)
 
         for phrs in nphrs["noun_phrases"]
-            println("Noun phrases: ", phrs)
+            println("Noun phrase: ", phrs)
             try
                 norm_str = resolve_name(phrs)
+                println("Resolved name: ", norm_str)
                 json_str = JSON.parse(String(norm_str))
                 for i in 1:length(json_str)
                     if json_str[i]["NameSubmitted"] != "No Matches" && json_str[i]["NameSubmitted"] != "Unknown"
