@@ -39,7 +39,6 @@ WORKDIR /usr/bin/solrplant_api
 
 COPY "./Manifest.toml" /usr/bin/solrplant_api/
 COPY "./Project.toml" /usr/bin/solrplant_api/
-COPY src /usr/bin/solrplant_api/src
 
 EXPOSE 8081 8983
 
@@ -52,6 +51,7 @@ RUN echo "Installing Julia Packages"
 
 RUN julia -e 'using Pkg; Pkg.activate(pwd()); Pkg.instantiate();'
 
+COPY src /usr/bin/solrplant_api/src
 COPY "server.jl" /usr/bin/solrplant_api/
 
 CMD julia --project server.jl

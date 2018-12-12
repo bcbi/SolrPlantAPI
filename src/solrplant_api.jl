@@ -54,7 +54,7 @@ function generate_query(string::String)
         push!(str_arr, "term:$str~")
         query = join(str_arr, "%20OR%20")
     end
-    url_string = solar_host * "/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
+    url_string = solr_host * "/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
     #url_string = "http://bcbi.brown.edu/solr/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
     return url_string
 end
@@ -87,7 +87,7 @@ function generate_sub_query(string::String, not_arr)
         query = yes_query
     end
 
-    url_string = solar_host * "/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc&rows=10"
+    url_string = solr_host * "/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc&rows=10"
     @info "***Solr URL"
     @show url_string
     #url_string = "http://bcbi.brown.edu/solr/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
@@ -228,7 +228,7 @@ end
 
 # Retrieve accepted name
 function accepted_name(ubt_id::String)
-    url_string = solar_host * "/ubt_plant/select?q=ubt_id:$ubt_id%20AND%20type:sciname"
+    url_string = solr_host * "/ubt_plant/select?q=ubt_id:$ubt_id%20AND%20type:sciname"
     #url_string = "http://bcbi.brown.edu/solr/solr/ubt_plant/select?q=ubt_id:$ubt_id%20AND%20type:sciname"
     ret_str  = HTTP.request("GET","$url_string";)
     json_str = JSON.parse(String(ret_str.body))
