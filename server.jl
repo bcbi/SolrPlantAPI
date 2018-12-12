@@ -15,7 +15,7 @@ global wp = WorkerPool(workers())
 end
 # SERVER FUNCTION
 function process_text(;text="")
-    @info "GETTING STATS"
+    @info "Processing Text"
     f = remotecall(extract_plants, wp, string(text))
     return fetch(f)
 end
@@ -23,7 +23,7 @@ end
 function build_server()
     headers = Dict{AbstractString,AbstractString}(
         "Server"            => "Julia/$VERSION",
-        "Content-Type"      => "text/html; charset=utf-8",
+        "Content-Type"      => "text/plain; charset=utf-8",
         "Content-Language"  => "en",
         "Date"              => Dates.format(now(Dates.UTC), Dates.RFC1123Format),
         # "Access-Control-Allow-Origin" => "https://bcbi.brown.edu",
@@ -34,31 +34,27 @@ function build_server()
     # route handlers
     h_text = HTTP.Handlers.HandlerFunction( (req) -> begin
 
+            @info "Entered Handler"
             @show headers
-            uri = parse(HTTP.URI, req.target)
-            query_dict = HTTP.queryparams(uri)
-            @show uri
-            @show query_dict
+            @info "Request"
             @show req
-            @show req.body
 
             try
-                @info "here"
-                # text = query_dict["text"]
-                text = req.body
-                response = HTTP.Response(200, HTTP.Headers(collect(headers)), body = process_text(text=string(text)))
+                @info "Received text"
+                text = String(req.body)
+                @show text
+                response = HTTP.Response(200, HTTP.Headers(collect(headers)), body = process_text(text=text))
                 return response
             catch
-                @show query_dict
-                @warn "Incorrect query parameters"
-                return HTTP.Response(400, HTTP.Headers(collect(headers)), body = "Incorrect parameters")
+                @warn "Incorrect request"
+                return HTTP.Response(400, HTTP.Headers(collect(headers)), body = "Incorrect request")
             end
 
         end)
 
     r = HTTP.Router()
 
-    HTTP.register!(r, "GET", "", h_text)
+    HTTP.register!(r, "POST", "", h_text)
 
     return HTTP.Servers.Server(r, ratelimit=typemax(Int64)//1)
 

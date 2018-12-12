@@ -21,9 +21,9 @@ echo "Tag: ${TAG}"
 
 if [ "$1" == "build-and-push" ]; then
     docker build -f Dockerfile --tag=${REPOSITORY}/${IMAGE_NAME}:${TAG} .
-    # docker push ${REPOSITORY}/${IMAGE_NAME}:${TAG}
+    docker push ${REPOSITORY}/${IMAGE_NAME}:${TAG}
     docker tag ${REPOSITORY}/${IMAGE_NAME}:${TAG} ${REPOSITORY}/${IMAGE_NAME}:latest
-    # docker push ${REPOSITORY}/${IMAGE_NAME}:latest
+    docker push ${REPOSITORY}/${IMAGE_NAME}:latest
     echo "Pushed ${REPOSITORY}/${IMAGE_NAME}:${TAG} and :latest"
 elif [ "$1" == "run-dev" ]; then
         docker run -d -p 8081:8081 --net="host" --restart always --name ${IMAGE_NAME} ${REPOSITORY}/${IMAGE_NAME}:latest
