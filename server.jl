@@ -5,7 +5,9 @@ while nprocs() < Sys.CPU_THREADS
     @info "adding worker"
 end
 
-@everywhere using HTTP, Sockets, Dates
+@everywhere using HTTP, Sockets, Dates, PyCall
+@everywhere @pyimport textblob
+@everywhere @pyimport textblob.np_extractors as npx
 
 @info "creating worker pool"
 global wp = WorkerPool(workers())
@@ -16,7 +18,10 @@ end
 # SERVER FUNCTION
 function process_text(;text="")
     @info "Processing Text"
-    f = remotecall(extract_plants, wp, string(text))
+    extractor = npx.ConllExtractor()
+    f = remotecall(extract_plants, wp, text, extractor)
+    @info "Result Text"
+    @show f
     return fetch(f)
 end
 
