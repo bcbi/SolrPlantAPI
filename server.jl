@@ -59,7 +59,7 @@ function build_server()
 
     r = HTTP.Router()
 
-    HTTP.register!(r, "POST", "", h_text)
+    HTTP.register!(r, "POST", "/", h_text)
 
     return HTTP.Servers.Server(r, ratelimit=typemax(Int64)//1)
 

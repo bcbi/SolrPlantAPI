@@ -271,10 +271,16 @@ function extract_plants(text, extractor)
     txt = replace(txt, r"\*\s" => "")
     txt = replace(txt, r"\%" => "")
     txt = strip(txt)
+    println("text after stripping: ", txt)
     sent_arr = sentTokenization(txt, ntk)
+    println("text after tokenization: ", sent_arr)
+
     for sent in sent_arr
         nphrs = textblob.TextBlob(sent, np_extractor=extractor)
+        println("Noun phrases: ", nphrs)
+
         for phrs in nphrs["noun_phrases"]
+            println("Noun phrases: ", phrs)
             try
                 norm_str = resolve_name(phrs)
                 json_str = JSON.parse(String(norm_str))
@@ -287,6 +293,7 @@ function extract_plants(text, extractor)
                         accept_name = json_str[i]["AcceptedName"]
                         #println("$(json_str[i]["NameSubmitted"])\$$(json_str[i]["NameMatched"])\$$(json_str[i]["AcceptedName"])")
                         push!(ret_arr, """{"NameSubmitted":"$name_subm","NameMatched":"$name_match","TaxonomicStatus":"$match_typ","uBiotaID":$ubt_id,"AcceptedName":"$accept_name"}""")
+                        println("Ret Array: ", ret_arr)
                     end
                 end
             catch err
@@ -334,7 +341,7 @@ end
 ### TESTS ###
 #############
 #herb = "Strychnos nux-vomica"
-# herb = "This sentence contains Raulfia serpentina, Mangifera indica and Arabidoopsis thaliana of plantae, glycine and fabaceae family in it."
+herb = "This sentence contains Raulfia serpentina, Mangifera indica and Arabidoopsis thaliana of plantae, glycine and fabaceae family in it."
 #herb = "This sentence has no analysis plantae ginkgo biloba." # names in it."
 #herb = "Arabidopsis"
 #herb = "This study focussed on the effect of increasing nitrogen (N) supply on root uptake and root-to-shoot translocation of zinc (Zn) as well as retranslocation of foliar-applied Zn in durum wheat (Triticum durum)."
