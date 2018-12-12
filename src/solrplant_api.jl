@@ -29,7 +29,7 @@ function sentTokenization(txt, ntk)
     sent_arr = ntk.sent_tokenize(txt)
     for i in 1:length(sent_arr)
         if i < length(sent_arr)
-            if ismatch(r"[Nn]o\.\s[a-z0-9]", sent_arr[i] * " " * sent_arr[i+1]) || ismatch(r"[A-Za-z]\.\s[a-z0-9]", sent_arr[i] * " " * sent_arr[i+1])
+            if occursin(r"[Nn]o\.\s[a-z0-9]", sent_arr[i] * " " * sent_arr[i+1]) || occursin(r"[A-Za-z]\.\s[a-z0-9]", sent_arr[i] * " " * sent_arr[i+1])
                 sent_arr[i] = sent_arr[i] * " " * sent_arr[i+1] #* "\."
                 deleteat!(sent_arr, i+1)
             end
@@ -124,7 +124,7 @@ function norm_string(url::String,herb_str::String)
             # Old version:
             #seq_a = uppercase(herb_str)
             #seq_b = uppercase(name)
-            if ismatch(r"([A-Z][a-z\-]+\s[a-z]{0,3}\.?\s*[a-z\-]+)\.?.*", name)
+            if occursin(r"([A-Z][a-z\-]+\s[a-z]{0,3}\.?\s*[a-z\-]+)\.?.*", name)
                 matrix, path = sw_align(seq_a,seq_b)
                 algn_a, algn_b, scr, indx, indy, mstr = traceback(matrix,path,seq_a,seq_b)
                 name_pd  = name
@@ -198,11 +198,11 @@ function check_match(seq_a, seq_b, algn_a, indx, mstr)
     seq_b = "$seq_b "
     string(seq_b[indx+1]) != " " ? sp = search(seq_b, " ", indx)[end] : sp = indx
     cs1 == 1 ? cs1 = 2 : cs1 = cs1
-    if string(seq_b[cs1-1]) == " " || ismatch(Regex("^$(seq_b[cs1-1])"), seq_b)
+    if string(seq_b[cs1-1]) == " " || occursin(Regex("^$(seq_b[cs1-1])"), seq_b)
         cs1 == 2 ? cs1 = 1 : cs1 = cs1
         if length(ce1) > 0
-            if seq_b[cs1] == seq_a[1] && seq_b[ce1[end]+1] == split(seq_a, " ")[end][1] && abs(sp-(indx+1)) <= 2 # || ismatch(Regex("$(seq_b[indx])\$"), seq_b))
-                if ismatch(r"\s", seq_a)
+            if seq_b[cs1] == seq_a[1] && seq_b[ce1[end]+1] == split(seq_a, " ")[end][1] && abs(sp-(indx+1)) <= 2 # || occursin(Regex("$(seq_b[indx])\$"), seq_b))
+                if occursin(r"\s", seq_a)
                     return "match"
                 else
                     if seq_a[end] == seq_b[indx]
