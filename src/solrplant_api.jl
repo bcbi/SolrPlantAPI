@@ -88,6 +88,8 @@ function generate_sub_query(string::String, not_arr)
     end
 
     url_string = solar_host * "/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc&rows=10"
+    @info "***Solr URL"
+    @show url_string
     #url_string = "http://bcbi.brown.edu/solr/solr/ubt_plant/select?fl=*,score&q=$query&sort=score%20desc"
     return url_string
 end
@@ -99,6 +101,8 @@ function norm_string(url::String,herb_str::String)
     #flag     = 0
     ret_str  = HTTP.request("GET","$url";)
     json_str = JSON.parse(String(ret_str.body))
+    @info "***JSON response"
+    @show json_str
     numFound = json_str["response"]["numFound"]
     #println(json_str)
     if numFound > 0
