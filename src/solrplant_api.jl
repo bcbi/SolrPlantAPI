@@ -139,7 +139,7 @@ function norm_string(url::String,herb_str::String)
                         if scr > max_scr
                             max_scr = scr
                             filter!(x -> x!="-", algn_b)
-                            res_dict[scr] = "$(ucfirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
+                            res_dict[scr] = "$(uppercasefirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
                             #println("$herb_name\$$name\$$name_pd\$$solr_scr\$$scr\$$name_len\$$coverage\$$mapping")
                         end
                     end
@@ -159,7 +159,7 @@ function norm_string(url::String,herb_str::String)
                             if scr > max_scr
                                 max_scr = scr
                                 filter!(x -> x!="-", algn_b)
-                                res_dict[scr] = "$(ucfirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
+                                res_dict[scr] = "$(uppercasefirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
                                 #println("$herb_name\$$name\$$name_pd\$$solr_scr\$$scr\$$name_len\$$coverage\$$mapping")
                             end
                         end
@@ -178,7 +178,7 @@ function norm_string(url::String,herb_str::String)
                         if scr > max_scr
                             max_scr = scr
                             filter!(x -> x!="-", algn_b)
-                            res_dict[scr] = "$(ucfirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
+                            res_dict[scr] = "$(uppercasefirst(lowercase(join(algn_b))))\$$ubt_id\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$typ"
                             #println("$herb_name\$$name\$$name\$$solr_scr\$$scr\$$name_len\$$coverage\$$mapping")
                         end
                     end
@@ -257,7 +257,7 @@ function resolve_name(herb::String)
             split(res_str, "\$")[2] != "NA" ? name_subm = split(res_str, "\$")[1] : name_subm  = "No Matches"
             ubt_id     = String(split(res_str, "\$")[2])
             name_match = split(res_str, "\$")[3]
-            match_typ  = ucfirst(split(res_str, "\$")[end])
+            match_typ  = uppercasefirst(split(res_str, "\$")[end])
             ubt_id != "NA" ? accept_name = accepted_name(ubt_id) : accept_name = "NA"
             match_typ == "Sciname" ? match_typ = "Scientific Name" : match_typ = match_typ
             push!(name_arr, split(res_str, "\$")[3])
