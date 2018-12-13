@@ -194,7 +194,8 @@ end
 # Check for match or no-match
 function check_match(seq_a, seq_b, algn_a, indx, mstr)
     cs1 = indx-length(mstr)+1
-    ce1 = collect(rsearch(seq_b, " ", indx))
+    # ce1 = collect(rsearch(seq_b, " ", indx))
+    ce1 = collect(something(findprev(" ", seq_b, indx), 0:-1))
     seq_b = "$seq_b "
     string(seq_b[indx+1]) != " " ? sp = search(seq_b, " ", indx)[end] : sp = indx
     cs1 == 1 ? cs1 = 2 : cs1 = cs1
