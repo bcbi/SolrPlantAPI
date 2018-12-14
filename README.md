@@ -2,6 +2,20 @@
 
 Web-accessible (REST) service for Identification and resolution of plant taxonomic names
 
+## Prerequisites
+
+* Julia 1.0
+* Python
+  * NLTK `pip install nltk`
+  * NLTK resources 
+    ```
+    import nltk
+    nltk.download('punkt')
+    nltk.download('conll2000')
+    ```
+  * TEXTBLOB `pip install blob`
+
+
 ### Installing/Running locally
 
 * Clone this repository
